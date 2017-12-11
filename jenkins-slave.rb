@@ -53,33 +53,33 @@ class JenkinsSlave < Formula
     WARNING:
       You must configure the JENKINS_URL and JENKINS_SECRET variables in the plist file:
 
-    Step 1: Configure your JENKINS_URL / JENKINS_SECRET.
+    Step 1: Set your JENKINS_URL / JENKINS_SECRET in the environment:
 
-    export JENKINS_SLAVE_PLIST=#{prefix/(plist_name+".plist")}
-    sed -i.bak \\
-      's/REPLACE_ME_JENKINS_URL/https:\\/\\/my-jenkins.com\\/computer\\/agentname\\/slave-agent.jnlp// \\
-      ${JENKINS_SLAVE_PLIST}
+      export url="https://my-jenkins.com/computer/agentname/slave-agent.jnlp"
+      export secret="bd38130d1412b54287a00a3750bd100c"
 
-    sed -i.bak \\
-      's/REPLACE_ME_JENKINS_SECRET/bd38130d1412b54287a00a3750bd100c/' \\
-      ${JENKINS_SLAVE_PLIST}
+    Step 2: Insert the JENKINS_URL / JENKINS_SECRET in the plist and ensure that JENKINS_SECRET is not stored in the bash history:
 
-    Step 2: Start the Jenkins Slave via brew services
+      sed -i "" "s@REPLACE_ME_JENKINS_URL@${url}@" #{prefix/(plist_name+".plist")}
+      sed -i "" "s@REPLACE_ME_JENKINS_SECRET@${secret}@" #{prefix/(plist_name+".plist")}
+      unset HISTFILE url secret
 
-      If you want to start on machine boot, use `root`.
+    Step 3: Start the Jenkins Slave via brew services
+
+      If you want to start on machine boot, use `sudo`:
 
       sudo brew services start riboseinc/jenkins-slaves/jenkins-slave
 
-      If you want to start on login, just do this.
+      If you want to start on login, just do this:
 
       brew services start riboseinc/jenkins-slaves/jenkins-slave
 
 
     *Ignore what brew tells you below!*
     -------------vvvvvvv-------------
-     \------------vvvvv------------/
-      \------------vvv------------/
-       \------------v------------/
+     \\------------vvvvv------------/
+      \\------------vvv------------/
+       \\------------v------------/
     EOS
   end
 
