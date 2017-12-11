@@ -22,7 +22,7 @@ class JenkinsSlave < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
 	<key>UserName</key>
-	<string>#{Process.uid}</string>
+	<string>#{ENV["USER"]}</string>
         <array>
           <string>/usr/bin/java</string>
           <string>-jar</string>
