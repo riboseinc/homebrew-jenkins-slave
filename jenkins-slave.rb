@@ -27,8 +27,10 @@ class JenkinsSlave < Formula
           <string>/usr/bin/java</string>
           <string>-jar</string>
           <string>#{libexec}/remoting.jar</string>
-          <string>--jnlpUrl=REPLACE_ME_JENKINS_URL</string>
-          <string>--secret=REPLACE_ME_JENKINS_SECRET</string>
+          <string>-jnlpUrl</string>
+          <string>REPLACE_ME_JENKINS_URL</string>
+          <string>-secret</string>
+          <string>REPLACE_ME_JENKINS_SECRET</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
