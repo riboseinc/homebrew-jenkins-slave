@@ -51,7 +51,7 @@ class JenkinsSlave < Formula
     "com.ribose.jenkins.slave"
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<-EOS
     WARNING:
       You must configure the JENKINS_URL and JENKINS_SECRET variables in the plist file:
 
