@@ -13,7 +13,7 @@ class JenkinsSlave < Formula
     bin.write_jar_script libexec/"remoting-#{version}.jar", "remoting"
   end
 
-  def plist; <<-EOS.undent
+  def plist; <<~EOS
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -51,7 +51,7 @@ class JenkinsSlave < Formula
     "com.ribose.jenkins.slave"
   end
 
-  def caveats; <<-EOS
+  def caveats; <<~EOS
     WARNING:
       You must configure the JENKINS_URL and JENKINS_SECRET variables in the plist file:
 
