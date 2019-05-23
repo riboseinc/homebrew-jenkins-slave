@@ -18,20 +18,12 @@ class JenkinsSlave < Formula
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
       <dict>
-      <key>EnvironmentVariables</key>
-        <dict>
-          <key>PATH</key>
-          <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
-        </dict>
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
-        <key>UserName</key>
-        <string>#{ENV["USER"]}</string>
+	<key>UserName</key>
+	<string>#{ENV["USER"]}</string>
         <array>
-          <string>sudo</string>
-          <string>-u</string>
-          <string>admin</string>
           <string>/usr/bin/java</string>
           <string>-jar</string>
           <string>#{libexec}/remoting-3.28.jar</string>
@@ -43,7 +35,7 @@ class JenkinsSlave < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>KeepAlive</key>
-	      <true/>
+	<true/>
         <key>StandardErrorPath</key>
         <string>#{var}/log/jenkins-slave.log</string>
         <key>StandardOutPath</key>
@@ -56,7 +48,7 @@ class JenkinsSlave < Formula
   end
 
   def plist_name
-    "de.iteratec.jenkins.slave"
+    "com.ribose.jenkins.slave"
   end
 
   def caveats; <<~EOS
