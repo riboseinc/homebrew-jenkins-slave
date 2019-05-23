@@ -2,8 +2,8 @@ class JenkinsSlave < Formula
 
   desc "Jenkins Slave for macOS"
   homepage "https://jenkins.io/projects/remoting/"
-  url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/3.28/remoting-3.28.jar"
-  sha256 "6cac94965872a429aa34deda09ddc2f16bbecae3d411f8802686f963ada068f3"
+  url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/3.30/remoting-3.30.jar"
+  sha256 "216be6d1aac23b05da064d85e5f4f3cb9a8b1c584bfa1f16b10009ef096e94b5"
 
   depends_on :java => "1.8+"
   bottle :unneeded
@@ -21,8 +21,8 @@ class JenkinsSlave < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
-	<key>UserName</key>
-	<string>#{ENV["USER"]}</string>
+      	<key>UserName</key>
+      	<string>#{ENV["USER"]}</string>
         <array>
           <string>/usr/bin/java</string>
           <string>-jar</string>
@@ -35,7 +35,7 @@ class JenkinsSlave < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>KeepAlive</key>
-	<true/>
+        <true/>
         <key>StandardErrorPath</key>
         <string>#{var}/log/jenkins-slave.log</string>
         <key>StandardOutPath</key>
