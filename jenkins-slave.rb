@@ -26,7 +26,7 @@ class JenkinsSlave < Formula
         <array>
           <string>/usr/bin/java</string>
           <string>-jar</string>
-          <string>#{libexec}/remoting.jar</string>
+          <string>#{libexec}/remoting-#{version}.jar</string>
           <string>-jnlpUrl</string>
           <string>REPLACE_ME_JENKINS_URL</string>
           <string>-secret</string>
