@@ -1,50 +1,16 @@
 class JenkinsSlave < Formula
-
   desc "Jenkins Slave for macOS"
   homepage "https://jenkins.io/projects/remoting/"
   url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/3.30/remoting-3.30.jar"
   sha256 "216be6d1aac23b05da064d85e5f4f3cb9a8b1c584bfa1f16b10009ef096e94b5"
 
-  depends_on :java => "1.8+"
   bottle :unneeded
+
+  depends_on :java => "1.8+"
 
   def install
     libexec.install "remoting-#{version}.jar"
     bin.write_jar_script libexec/"remoting-#{version}.jar", "remoting"
-  end
-
-  def plist; <<~EOS
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-      <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-      	<key>UserName</key>
-      	<string>#{ENV["USER"]}</string>
-        <array>
-          <string>/usr/bin/java</string>
-          <string>-jar</string>
-          <string>#{libexec}/remoting-#{version}.jar</string>
-          <string>-jnlpUrl</string>
-          <string>REPLACE_ME_JENKINS_URL</string>
-          <string>-secret</string>
-          <string>REPLACE_ME_JENKINS_SECRET</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>KeepAlive</key>
-        <true/>
-        <key>StandardErrorPath</key>
-        <string>#{var}/log/jenkins-slave.log</string>
-        <key>StandardOutPath</key>
-        <string>#{var}/log/jenkins-slave.log</string>
-        <key>SessionCreate</key>
-        <true/>
-      </dict>
-    </plist>
-    EOS
   end
 
   def plist_name
@@ -82,7 +48,58 @@ class JenkinsSlave < Formula
      \\------------vvvvv------------/
       \\------------vvv------------/
        \\------------v------------/
-    EOS
+  EOS
   end
 
+  def plist; <<~EOS
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+      	<key>UserName</key>
+      	<string>#{ENV["USER"]}</string>
+        <array>
+          <string>/usr/libexec/java_home</string>
+          <string>-v</string>
+          <string>1.8</string>
+          <string>--exec</string>
+          <string>java</string>
+          <string>-jar</string>
+          <string>#{libexec}/remoting-#{version}.jar</string>
+          <string>-jnlpUrl</string>
+          <string>REPLACE_ME_JENKINS_URL</string>
+          <string>-secret</string>
+          <string>REPLACE_ME_JENKINS_SECRET</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/jenkins-slave.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/jenkins-slave.log</string>
+        <key>SessionCreate</key>
+        <true/>
+      </dict>
+    </plist>
+  EOS
+  end
+
+  plist_options :startup => true
+
+  test do
+    test_url = "http://example.com/jenkins"
+    test_secret = "XXX"
+
+    # plist_path = prefix/(plist_name + ".plist")
+    # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_URL@#{test_url}@\" #{plist_path}"
+    # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_SECRET@#{test_secret}@\" #{plist_path}"
+
+    output = shell_output("#{bin}/remoting -jnlpUrl #{test_url} -secret #{test_secret} 2>&1")
+    assert_match(%r{Failing to obtain #{test_url}\?encrypt=true}, output)
+  end
 end
