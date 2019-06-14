@@ -1,0 +1,29 @@
+language: ruby
+matrix:
+  include:
+    - env: OSX=10.14
+      os: osx
+      osx_image: xcode10.2
+    - env: OSX=10.13
+      os: osx
+      osx_image: xcode10.1
+    - env: OSX=10.12
+      os: osx
+      osx_image: xcode9.2
+
+before_install:
+  - brew update
+
+install:
+  - mkdir -p $(brew --repo)/Library/Taps/travis
+  - ln -s $PWD $(brew --repo)/Library/Taps/travis/homebrew-testtap
+  - brew tap --repair
+
+script:
+  - brew audit --new-formula jenkins-slave.rb || true # sometimes it fails because of GitHub API Error: API rate limit exceeded for
+  - brew install jenkins-slave
+  - brew test jenkins-slave
+  - brew uninstall jenkins-slave
+
+addons:
+  ssh_known_hosts: github.com
