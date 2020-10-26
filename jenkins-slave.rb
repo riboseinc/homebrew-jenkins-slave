@@ -59,8 +59,8 @@ class JenkinsSlave < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
-      	<key>UserName</key>
-      	<string>#{ENV["USER"]}</string>
+        <key>UserName</key>
+        <string>#{ENV["USER"]}</string>
         <array>
           <string>/usr/libexec/java_home</string>
           <string>-v</string>
