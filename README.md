@@ -2,20 +2,19 @@
 
 This tap contains a formula to install the Jenkins Slave on macOS.
 
-
 ## Quick Install
 
 Run this and it's all done.
 
-``` sh
+```sh
 brew tap riboseinc/jenkins-slave
-brew install --HEAD jenkins-slave
+brew install jenkins-slave
 ```
 
 Or:
 
-``` sh
-brew install --HEAD riboseinc/jenkins-slave/jenkins-slave
+```sh
+brew install riboseinc/jenkins-slave/jenkins-slave
 ```
 
 ## Install Tap
@@ -26,23 +25,21 @@ brew tap riboseinc/jenkins-slave
 
 ## Install jenkins-slave
 
-Currently it is a HEAD-only formula, i.e., you must install it using the `--HEAD` option:
-
 ``` sh
-brew install --HEAD jenkins-slave
+brew install jenkins-slave
 ```
 
 If the formula conflicts with one from `Homebrew/homebrew` or another
 tap, you can run:
 
 ``` sh
-brew install --HEAD riboseinc/jenkins-slave/jenkins-slave
+brew install riboseinc/jenkins-slave/jenkins-slave
 ```
 
 You can also install via URL:
 
 ``` sh
-brew install --HEAD https://raw.githubusercontent.com/riboseinc/homebrew-jenkins-slave/master/jenkins-slave.rb
+brew install https://raw.githubusercontent.com/riboseinc/homebrew-jenkins-slave/master/jenkins-slave.rb
 ```
 
 ## Acceptable Formulae
