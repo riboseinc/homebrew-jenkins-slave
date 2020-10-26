@@ -14,7 +14,7 @@ class JenkinsSlave < Formula
   end
 
   def plist_name
-    "com.ribose.jenkins.slave"
+    "org.jenkins-ci.remoting"
   end
 
   def caveats; <<~EOS
