@@ -1,8 +1,8 @@
 class JenkinsSlave < Formula
   desc "Jenkins Slave for macOS"
   homepage "https://jenkins.io/projects/remoting/"
-  url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/3.30/remoting-3.30.jar"
-  sha256 "216be6d1aac23b05da064d85e5f4f3cb9a8b1c584bfa1f16b10009ef096e94b5"
+  url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/4.5/remoting-4.5.jar"
+  sha256 "509fdd80048747c9e2e0ba90317e0845e6a95acd0d65995e7af72d57ee924267"
 
   bottle :unneeded
 
