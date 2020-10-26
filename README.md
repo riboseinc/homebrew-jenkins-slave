@@ -42,20 +42,6 @@ You can also install via URL:
 brew install https://raw.githubusercontent.com/riboseinc/homebrew-jenkins-slave/master/jenkins-slave.rb
 ```
 
-## Acceptable Formulae
-
-You can read Homebrew’s Acceptable Formulae document [here](https://github.com/Homebrew/brew/blob/master/docs/Acceptable-Formulae.md).
-
-## Troubleshooting
-
-First, please run `brew update` and `brew doctor`.
-
-Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/brew/blob/master/docs/Troubleshooting.md#troubleshooting).
-
-## More Documentation
-
-`brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/brew/tree/master/docs#readme).
-
 ## License
 
 Code is under the [BSD 2 Clause license](https://github.com/Homebrew/brew/tree/master/LICENSE.txt).
