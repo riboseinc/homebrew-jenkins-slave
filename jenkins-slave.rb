@@ -10,7 +10,7 @@ class JenkinsSlave < Formula
 
   def install
     libexec.install "remoting-#{version}.jar"
-    bin.write_jar_script libexec/"remoting-#{version}.jar", "remoting"
+    bin.write_jar_script libexec/"remoting-#{version}.jar", "jenkins-slave"
   end
 
   def plist_name
