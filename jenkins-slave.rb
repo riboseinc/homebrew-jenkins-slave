@@ -60,9 +60,11 @@ class JenkinsSlave < Formula
         <dict>
           <key>Label</key>
           <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
+
           <key>UserName</key>
           <string>#{ENV["USER"]}</string>
+
+          <key>ProgramArguments</key>
           <array>
             <string>/usr/libexec/java_home</string>
             <string>-v</string>
@@ -76,14 +78,19 @@ class JenkinsSlave < Formula
             <string>-secret</string>
             <string>REPLACE_ME_JENKINS_SECRET</string>
           </array>
+
           <key>RunAtLoad</key>
           <true/>
+
           <key>KeepAlive</key>
           <true/>
+
           <key>StandardErrorPath</key>
           <string>#{var}/log/jenkins-slave.log</string>
+
           <key>StandardOutPath</key>
           <string>#{var}/log/jenkins-slave.log</string>
+
           <key>SessionCreate</key>
           <true/>
         </dict>
