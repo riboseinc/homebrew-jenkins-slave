@@ -66,13 +66,7 @@ class JenkinsSlave < Formula
 
           <key>ProgramArguments</key>
           <array>
-            <string>/usr/libexec/java_home</string>
-            <string>-v</string>
-            <string>1.8</string>
-            <string>--exec</string>
-            <string>java</string>
-            <string>-jar</string>
-            <string>#{libexec}/remoting-#{version}.jar</string>
+            <string>#{bin}/jenkins-slave</string>
             <string>-jnlpUrl</string>
             <string>REPLACE_ME_JENKINS_URL</string>
             <string>-secret</string>
