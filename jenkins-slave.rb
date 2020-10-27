@@ -1,3 +1,4 @@
+# Rubydoc: https://rubydoc.brew.sh/Formula.html
 class JenkinsSlave < Formula
   desc "Jenkins Slave for macOS"
   homepage "https://jenkins.io/projects/remoting/"
