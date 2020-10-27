@@ -35,6 +35,8 @@ If you've cloned this repo and want to install your work in progress locally run
 brew install --build-from-source ./jenkins-slave.rb
 ```
 
+Good resource to stat is the [Formula Cookbook][cookbook].
+
 ## Launch Daemons
 
 Services on Mac OS are done by [Launch Daemons][launch-daemons] ([Daemons and Services Programming Guide][launch-daemons-apple] from Apple).
@@ -57,6 +59,7 @@ The first number is the PID of the running command and the second number is the 
 
 Code is under the [BSD 2 Clause license][license].
 
+[cookbook]:             https://github.com/Homebrew/brew/blob/master/docs/Formula-Cookbook.md
 [launch-daemons]:       http://www.launchd.info/
 [launch-daemons-apple]: https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html
 [license]:              https://github.com/Homebrew/brew/tree/master/LICENSE.txt
