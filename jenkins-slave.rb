@@ -8,48 +8,160 @@ class JenkinsSlave < Formula
 
   depends_on "openjdk@11"
 
-  def install
-    libexec.install "remoting-#{version}.jar"
-    bin.write_jar_script libexec/"remoting-#{version}.jar", "jenkins-slave"
+  def configure_script_name
+    name + "-configure"
   end
 
-  def plist_name
-    "org.jenkins-ci.remoting"
+  def log_file
+    "#{var}/log/#{name}.log"
+  end
+
+  def install
+    libexec.install "remoting-#{version}.jar"
+    bin.write_jar_script libexec/"remoting-#{version}.jar", name
+    (bin + configure_script_name).write configure_script
   end
 
   def caveats
     <<~EOS
       WARNING:
-        You must configure the JENKINS_URL and JENKINS_SECRET variables in the plist file:
+        You must configure the daemon first:
 
-      Step 1: Set your JENKINS_URL / JENKINS_SECRET in the environment:
+      Step 1: Run theconfigure script
 
-        export url="https://my-jenkins.com/computer/agentname/slave-agent.jnlp"
-        export secret="bd38130d1412b54287a00a3750bd100c"
+        #{configure_script_name} --url "https://my-jenkins.com/computer/agentname/slave-agent.jnlp" \
+          --secret "bd38130d1412b54287a00a3750bd100c"
 
-      Step 2: Insert the JENKINS_URL / JENKINS_SECRET in the plist and ensure that JENKINS_SECRET is not stored in the bash history:
+        This is an example. You must change url and secret according to your Jenkins setup.
+        For more information about the configuration script run: #{configure_script_name} --help
 
-        sed -i "" "s@REPLACE_ME_JENKINS_URL@${url}@" #{prefix/(plist_name+".plist")}
-        sed -i "" "s@REPLACE_ME_JENKINS_SECRET@${secret}@" #{prefix/(plist_name+".plist")}
-        unset HISTFILE url secret
+      Step 2: Start the Jenkins Slave via brew services
 
-      Step 3: Start the Jenkins Slave via brew services
+        If you want to start on machine boot:
 
-        If you want to start on machine boot, use `sudo`:
-
-        sudo brew services start riboseinc/jenkins-slaves/jenkins-slave
+        sudo brew services start #{name}
 
         If you want to start on login, just do this:
 
-        brew services start riboseinc/jenkins-slaves/jenkins-slave
+        brew services start #{name}
 
+      Step 3: Verify daemon is running
 
-      *Ignore what brew tells you below!*
-      -------------vvvvvvv-------------
-      \\------------vvvvv------------/
-        \\------------vvv------------/
-        \\------------v------------/
+        sudo launchctl list | grep #{plist_name}
+
+        Logs can be inspected here: #{log_file}
     EOS
+  end
+
+  def configure_script
+    <<~EOS
+      #!/bin/bash
+
+      set -eu
+
+      PLIST_FILE='#{prefix/(plist_name + ".plist")}'
+      JENKINS_URL=""
+      JENKINS_SECRET=""
+      JENKINS_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+      USAGE="Usage: $(basename "${0}") -u|--url <URL> -s|--secret <SECRET> [-p|--path <PATH>][-h|--help]"
+      HELP=$(cat <<- EOT
+      This script configures the launchctl configuration for the jenkins-slave service.
+
+      Options:
+
+        -u|--url <URL>          Required URL to the JNLP endpoint of the Jenkins slave.
+        -s|--secret <SECRET>    Required secret for the slave node to authenticate against the master.
+        -p|--path <PATH>        Optional path to set. Defaults to '/usr/bin:/bin:/usr/sbin:/sbin'.
+        -h|--help               Show this help.
+
+      Example:
+
+        jenkins-slave-configure --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ******
+
+        jenkins-slave-configure --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ****** \
+          --path '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
+      EOT
+      )
+
+      print_help() {
+        echo "${USAGE}"
+        echo
+        echo "${HELP}"
+        echo
+      }
+
+      echo_err() {
+        echo "${1}" >&2
+      }
+
+      error() {
+        echo_err "Error: ${1}"
+      }
+
+      while (( "$#" )); do
+        case "${1}" in
+          -u|--url)
+          if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+              JENKINS_URL="${2}"
+              shift 2
+          else
+              error "Argument for ${1} is missing"
+              echo_err "${USAGE}"
+              exit 1
+          fi
+          ;;
+        -s|--secret)
+          if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+              JENKINS_SECRET="${2}"
+              shift 2
+          else
+              error "Argument for ${1} is missing"
+              echo_err "${USAGE}"
+              exit 1
+          fi
+          ;;
+        -p|--path)
+          if [ -n "${2}" ] && [ "${2:0:1}" != "-" ]; then
+              JENKINS_PATH="${2}"
+              shift 2
+          else
+              error "Argument for ${1} is missing"
+              echo_err "${USAGE}"
+              exit 1
+          fi
+          ;;
+        -h|--help)
+          print_help
+          exit 0
+          ;;
+        *)
+          error "Unsupported argument: $1!"
+          echo_err "${USAGE}"
+          ;;
+        esac
+      done
+
+      if [[ "${JENKINS_URL}" == "" ]]; then
+        error "Required argument --url not given!"
+        echo_err "${USAGE}"
+        exit 2
+      fi
+
+      if [[ "${JENKINS_SECRET}" == "" ]]; then
+        error "Required argument --secret not given!"
+        echo_err "${USAGE}"
+        exit 2
+      fi
+
+      sed -i '' "s|REPLACE_PATH|${JENKINS_PATH}|g" "${PLIST_FILE}"
+      sed -i '' "s|REPLACE_URL|${JENKINS_URL}|g" "${PLIST_FILE}"
+      sed -i '' "s|REPLACE_SECRET|${JENKINS_SECRET}|g" "${PLIST_FILE}"
+    EOS
+  end
+
+  def plist_name
+    "org.jenkins-ci." + name
   end
 
   def plist
@@ -64,13 +176,19 @@ class JenkinsSlave < Formula
           <key>UserName</key>
           <string>#{ENV["USER"]}</string>
 
+          <key>EnvironmentVariables</key>
+          <dict>
+            <key>PATH</key>
+            <string>REPLACE_PATH</string>
+          </dict>
+
           <key>ProgramArguments</key>
           <array>
-            <string>#{bin}/jenkins-slave</string>
+            <string>#{bin}/#{name}</string>
             <string>-jnlpUrl</string>
-            <string>REPLACE_ME_JENKINS_URL</string>
+            <string>REPLACE_URL</string>
             <string>-secret</string>
-            <string>REPLACE_ME_JENKINS_SECRET</string>
+            <string>REPLACE_SECRET</string>
           </array>
 
           <key>RunAtLoad</key>
@@ -80,10 +198,10 @@ class JenkinsSlave < Formula
           <true/>
 
           <key>StandardErrorPath</key>
-          <string>#{var}/log/jenkins-slave.log</string>
+          <string>#{log_file}</string>
 
           <key>StandardOutPath</key>
-          <string>#{var}/log/jenkins-slave.log</string>
+          <string>#{log_file}</string>
 
           <key>SessionCreate</key>
           <true/>
