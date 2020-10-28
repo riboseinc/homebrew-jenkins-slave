@@ -221,7 +221,7 @@ class JenkinsSlave < Formula
     # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_URL@#{test_url}@\" #{plist_path}"
     # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_SECRET@#{test_secret}@\" #{plist_path}"
 
-    output = shell_output("#{bin}/#{name} -jnlpUrl #{test_url} -secret #{test_secret} 2>&1")
-    assert_match(%r{Failing to obtain #{test_url}\?encrypt=true}, output)
+    output = shell_output("#{bin}/#{name} -noReconnect -jnlpUrl #{test_url} -secret #{test_secret} 2>&1", 1)
+    assert_match(%r{Failed to obtain #{test_url}\?encrypt=true}, output)
   end
 end
