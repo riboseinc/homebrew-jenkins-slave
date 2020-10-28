@@ -10,7 +10,7 @@ class JenkinsSlave < Formula
   depends_on "openjdk@11"
 
   def configure_script_name
-    name + "-configure"
+    "#{name}-configure"
   end
 
   def log_file
@@ -60,7 +60,7 @@ class JenkinsSlave < Formula
 
       set -eu
 
-      PLIST_FILE='#{prefix/(plist_name + ".plist")}'
+      PLIST_FILE='#{prefix}/#{plist_name}.plist'
       JENKINS_URL=""
       JENKINS_SECRET=""
       JENKINS_PATH="/usr/bin:/bin:/usr/sbin:/sbin"
@@ -162,7 +162,7 @@ class JenkinsSlave < Formula
   end
 
   def plist_name
-    "org.jenkins-ci." + name
+    "org.jenkins-ci.#{name}"
   end
 
   def plist
