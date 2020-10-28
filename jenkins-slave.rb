@@ -211,7 +211,7 @@ class JenkinsSlave < Formula
     EOS
   end
 
-  plist_options :startup => true
+  plist_options startup: true
 
   test do
     test_url = "http://example.com/jenkins"
