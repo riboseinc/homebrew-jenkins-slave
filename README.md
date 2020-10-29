@@ -1,5 +1,7 @@
 # Homebrew for jenkins-slave
 
+[![Build Status](https://img.shields.io/travis/riboseinc/homebrew-jenkins-slave?logo=Travis&style=flat-square&branch=master)](https://travis-ci.org/riboseinc/homebrew-jenkins-slave)
+
 This tap contains a formula to install the Jenkins Slave on macOS.
 
 ## Install
