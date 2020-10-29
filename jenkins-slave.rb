@@ -19,7 +19,7 @@ class JenkinsSlave < Formula
 
   def install
     libexec.install "remoting-#{version}.jar"
-    bin.write_jar_script libexec/"remoting-#{version}.jar", name
+    bin.write_jar_script libexec / "remoting-#{version}.jar", name
     (bin + configure_script_name).write configure_script
   end
 
@@ -175,7 +175,7 @@ class JenkinsSlave < Formula
           <string>#{plist_name}</string>
 
           <key>UserName</key>
-          <string>#{ENV["USER"]}</string>
+          <string>#{ENV['USER']}</string>
 
           <key>EnvironmentVariables</key>
           <dict>
@@ -215,13 +215,14 @@ class JenkinsSlave < Formula
 
   test do
     test_url = "http://example.com/jenkins"
-    test_secret = "XXX"
+    test_cmd = <<~TEST_CMD.gsub(/\s+/, " ").strip
+      #{bin}/#{name} \
+        -noReconnect \
+        -jnlpUrl #{test_url} \
+        -secret XXX
+    TEST_CMD
 
-    # plist_path = prefix/(plist_name + ".plist")
-    # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_URL@#{test_url}@\" #{plist_path}"
-    # exec "sed -i \"\" \"s@REPLACE_ME_JENKINS_SECRET@#{test_secret}@\" #{plist_path}"
-
-    output = shell_output("#{bin}/#{name} -noReconnect -jnlpUrl #{test_url} -secret #{test_secret} 2>&1", 1)
-    assert_match(%r{Failed to obtain #{test_url}\?encrypt=true}, output)
+    output = shell_output "#{test_cmd} 2>&1", 1
+    assert_match /Failed to obtain #{test_url}\?encrypt=true/i, output
   end
 end

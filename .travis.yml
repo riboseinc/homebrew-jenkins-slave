@@ -11,8 +11,8 @@ matrix:
       os: osx
       osx_image: xcode9.2
 
-before_install:
-  - brew update
+#before_install:
+#  - brew update
 
 install:
   - mkdir -p $(brew --repo)/Library/Taps/travis
