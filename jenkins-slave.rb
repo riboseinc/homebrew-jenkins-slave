@@ -162,8 +162,12 @@ class JenkinsSlave < Formula
   end
 
   def plist_name
-    "org.jenkins-ci.#{name}"
+    "com.ribose.jenkins.slave"
   end
+
+  # def plist_name
+  #   "org.jenkins-ci.#{name}"
+  # end
 
   def plist
     <<~STRING
@@ -223,6 +227,9 @@ class JenkinsSlave < Formula
     STRING
 
     output = shell_output "#{test_cmd} 2>&1", 1
-    assert_match /Failed to obtain #{test_url}\?encrypt=true/i, output
+    assert_match /Failed to obtain #{test_url}\?encrypt=true/i, \
+                 output, \
+                 "\e[31mx #{name} not working\e[0m\n"
+    print "\e[32m✓ #{name} is working\e[0m\n"
   end
 end
