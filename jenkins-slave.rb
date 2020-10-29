@@ -24,7 +24,7 @@ class JenkinsSlave < Formula
   end
 
   def caveats
-    <<~EOS
+    <<~STRING
       WARNING:
         You must configure the daemon first:
 
@@ -51,11 +51,11 @@ class JenkinsSlave < Formula
         sudo launchctl list | grep #{plist_name}
 
         Logs can be inspected here: #{log_file}
-    EOS
+    STRING
   end
 
   def configure_script
-    <<~EOS
+    <<~STRING
       #!/bin/bash
 
       set -eu
@@ -158,7 +158,7 @@ class JenkinsSlave < Formula
       sed -i '' "s|REPLACE_PATH|${JENKINS_PATH}|g" "${PLIST_FILE}"
       sed -i '' "s|REPLACE_URL|${JENKINS_URL}|g" "${PLIST_FILE}"
       sed -i '' "s|REPLACE_SECRET|${JENKINS_SECRET}|g" "${PLIST_FILE}"
-    EOS
+    STRING
   end
 
   def plist_name
@@ -166,7 +166,7 @@ class JenkinsSlave < Formula
   end
 
   def plist
-    <<~EOS
+    <<~STRING
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
       <plist version="1.0">
@@ -208,19 +208,19 @@ class JenkinsSlave < Formula
           <true/>
         </dict>
       </plist>
-    EOS
+    STRING
   end
 
   plist_options startup: true
 
   test do
     test_url = "http://example.com/jenkins"
-    test_cmd = <<~TEST_CMD.gsub(/\s+/, " ").strip
+    test_cmd = <<~STRING.gsub(/\s+/, " ").strip
       #{bin}/#{name} \
         -noReconnect \
         -jnlpUrl #{test_url} \
         -secret XXX
-    TEST_CMD
+    STRING
 
     output = shell_output "#{test_cmd} 2>&1", 1
     assert_match /Failed to obtain #{test_url}\?encrypt=true/i, output
