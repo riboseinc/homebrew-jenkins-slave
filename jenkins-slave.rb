@@ -67,7 +67,7 @@ class JenkinsSlave < Formula
 
       USAGE="Usage: $(basename "${0}") -u|--url <URL> -s|--secret <SECRET> [-p|--path <PATH>][-h|--help]"
       HELP=$(cat <<- EOT
-      This script configures the launchctl configuration for the jenkins-slave service.
+      This script configures the launchctl configuration for the #{name} service.
 
       Options:
 
@@ -78,9 +78,9 @@ class JenkinsSlave < Formula
 
       Example:
 
-        jenkins-slave-configure --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ******
+        #{configure_script_name} --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ******
 
-        jenkins-slave-configure --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ****** \
+        #{configure_script_name} --url http://your-jenkins/computer/node/slave-agent.jnlp --secret ****** \
           --path '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'
       EOT
       )
