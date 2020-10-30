@@ -165,10 +165,6 @@ class JenkinsSlave < Formula
     "com.ribose.jenkins.slave"
   end
 
-  # def plist_name
-  #   "org.jenkins-ci.#{name}"
-  # end
-
   def plist
     <<~STRING
       <?xml version="1.0" encoding="UTF-8"?>
