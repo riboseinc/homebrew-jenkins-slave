@@ -46,13 +46,13 @@ Services on Mac OS are done by [Launch Daemons][launch-daemons] ([Daemons and Se
 To check if the service runs run this command:
 
 ```sh
-sudo launchctl list | grep jenkins-slave
+sudo launchctl list | grep jenkins
 ```
 
 Thisshould print:
 
 ```sh
-2673    0       org.jenkins-ci.remoting
+2673    0       com.ribose.jenkins.slave
 ```
 
 The first number is the PID of the running command and the second number is the status code. A status indicates an error. You cna inspect it wuth `launchctl error <NUMBER>`.
