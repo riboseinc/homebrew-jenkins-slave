@@ -7,7 +7,7 @@ This tap contains a formula to install the Jenkins Slave on macOS.
 ## Install
 
 ```sh
-brew tap iteratec/jenkins-slave
+brew tap riboseinc/jenkins-slave
 brew install jenkins-slave
 ```
 
