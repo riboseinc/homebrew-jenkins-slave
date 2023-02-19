@@ -5,8 +5,6 @@ class JenkinsSlave < Formula
   url "https://repo.jenkins-ci.org/releases/org/jenkins-ci/main/remoting/4.5/remoting-4.5.jar"
   sha256 "509fdd80048747c9e2e0ba90317e0845e6a95acd0d65995e7af72d57ee924267"
 
-  bottle :unneeded
-
   depends_on "openjdk@11"
 
   def configure_script_name
